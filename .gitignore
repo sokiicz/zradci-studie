@@ -5,6 +5,8 @@ build/
 .cache/
 .env
 .env.*
+.env.local
+*.env
 !.env.example
 *.log
 app-meta.json

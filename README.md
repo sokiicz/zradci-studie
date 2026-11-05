@@ -19,8 +19,8 @@ pip install markdown-it-py
 python -I build.py
 ```
 
-Stránka nemá skripty ani měření návštěvnosti a nenačítá nic z cizích serverů.
+Stránka nemá skripty ani měření návštěvnosti a nenačítá písma, obrázky ani kód z cizích serverů. Hostuje ji GitHub Pages, který jako každý hosting vidí adresy (IP) návštěvníků. Odkazy na jiné weby (Instagram, YouTube, zdroje) se načtou, až když na ně kliknete.
 
 ## Licence
 
-Zatím neurčena. Text i kód jsou chráněné autorským právem, dokud autor nezvolí licenci.
+Zatím neurčena. Všechna práva vyhrazena, dokud autor nezvolí licenci.

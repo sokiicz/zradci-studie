@@ -6,8 +6,8 @@
 Potrebuje markdown-it-py (pip install markdown-it-py). Stranka nema zadne skripty,
 pisma ani mereni navstevnosti z cizich serveru: vsechno je v teto slozce.
 
-studie.md je kopie verejne verze studie (Apps/_docs/zradci-analyza/STUDIE-verejna.md),
-ktera prosla branou B2. Text se upravuje tam a sem se jen kopiruje.
+Zdroj textu je mimo repozitar, studie.md je jeho kopie. Text se upravuje tam
+a sem se jen kopiruje.
 """
 import html
 import io
@@ -21,7 +21,8 @@ ZDE = os.path.dirname(os.path.abspath(__file__))
 ADRESA = "https://sokiicz.github.io/zradci-studie/"
 TITULEK = "Dá se Turingovou metodou odhalit Zrádce? Kompletní studie"
 POPIS = ("Dá se Zrádce najít počítáním? Pokus o replikaci postupu Hannah Fry na 20 sériích Zrádců "
-         "z pěti zemí: data, metoda, výsledky, naše chyby a čemu se nedá věřit.")
+         "z pěti zemí: data, metoda, výsledky, naše chyby a čemu se nedá věřit. "
+         "Text a výpočty připravila AI.")
 OBRAZEK = ADRESA + "assets/nahled.png"
 OBRAZEK_POPIS = "Dá se Zrádce spočítat? 20 sérií, 5 zemí"
 AUTOR_IG = "https://www.instagram.com/johny_plesh/"
@@ -59,6 +60,7 @@ SABLONA = """<!doctype html>
 {obsah}
 </main>
 <footer class="paticka">
+<p>Neoficiální analýza. S pořadem, s televizí Prima ani s BBC nesouvisí.</p>
 <p>Autor na Instagramu: <a href="{autor_ig}">@johny_plesh</a></p>
 </footer>
 </body>
@@ -110,7 +112,9 @@ def main():
     # obsah za podtitul (první odstavec pod hlavním nadpisem)
     nav = ['<nav class="obsah" aria-label="Obsah"><p class="obsah-nadpis">Obsah</p><ul>']
     for kotva, nazev in obsah:
-        nav.append('<li><a href="#%s">%s</a></li>' % (kotva, html.escape(nazev)))
+        # v obsahu stačí název oddílu, upřesnění v závorce s odkazem na jiný oddíl zůstává v nadpisu
+        kratce = re.sub(r"\s*\([^)]*oddíl[^)]*\)", "", nazev)
+        nav.append('<li><a href="#%s">%s</a></li>' % (kotva, html.escape(kratce)))
     nav.append("</ul></nav>")
     konec_h1 = telo.index("</h1>")
     za_podtitulem = telo.index("</p>", konec_h1) + len("</p>")
