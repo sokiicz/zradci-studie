@@ -1,14 +1,26 @@
-# zradci-studie
+# Zrádci: kompletní studie
 
-> Status: wip — created 2026-11-05
+Dá se Zrádce najít počítáním? Kompletní studie k videu o Zrádcích: pokus o replikaci
+postupu Hannah Fry na 20 sériích pořadu z pěti zemí, data, metoda, výsledky, naše chyby
+a čemu se nedá věřit.
 
-## Setup
+Stránka: https://sokiicz.github.io/zradci-studie/
+
+Výpočty, kód a text připravila AI (Claude) podle autorových otázek a rozhodnutí. Podrobně
+to popisuje rámeček „Kdo studii připravil“ na začátku studie. Neoficiální analýza, která
+s pořadem, s televizí Prima ani s BBC nesouvisí.
+
+## Jak se stránka staví
+
+Text studie je v `studie.md`. Stránku `index.html` z něj postaví:
+
 ```bash
-# open index.html
+pip install markdown-it-py
+python -I build.py
 ```
 
-## Env vars
-See `D:/ai/Apps/Secrets/zradci-studie.txt` (local only, not committed).
+Stránka nemá skripty ani měření návštěvnosti a nenačítá nic z cizích serverů.
 
-## Deploy
-GitHub Pages — push, enable Pages on `main` / root.
+## Licence
+
+Zatím neurčena. Text i kód jsou chráněné autorským právem, dokud autor nezvolí licenci.

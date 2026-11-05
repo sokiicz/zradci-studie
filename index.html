@@ -1,0 +1,1396 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dá se Turingovou metodou odhalit Zrádce? Kompletní studie</title>
+<meta name="description" content="Dá se Zrádce najít počítáním? Pokus o replikaci postupu Hannah Fry na 20 sériích Zrádců z pěti zemí: data, metoda, výsledky, naše chyby a čemu se nedá věřit.">
+<link rel="canonical" href="https://sokiicz.github.io/zradci-studie/">
+<meta property="og:title" content="Dá se Turingovou metodou odhalit Zrádce? Kompletní studie">
+<meta property="og:description" content="Dá se Zrádce najít počítáním? Pokus o replikaci postupu Hannah Fry na 20 sériích Zrádců z pěti zemí: data, metoda, výsledky, naše chyby a čemu se nedá věřit.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://sokiicz.github.io/zradci-studie/">
+<meta property="og:image" content="https://sokiicz.github.io/zradci-studie/assets/nahled.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="720">
+<meta property="og:image:alt" content="Dá se Zrádce spočítat? 20 sérií, 5 zemí">
+<meta property="og:site_name" content="Zrádci: kompletní studie">
+<meta property="og:locale" content="cs_CZ">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dá se Turingovou metodou odhalit Zrádce? Kompletní studie">
+<meta name="twitter:description" content="Dá se Zrádce najít počítáním? Pokus o replikaci postupu Hannah Fry na 20 sériích Zrádců z pěti zemí: data, metoda, výsledky, naše chyby a čemu se nedá věřit.">
+<meta name="twitter:image" content="https://sokiicz.github.io/zradci-studie/assets/nahled.png">
+<meta name="twitter:image:alt" content="Dá se Zrádce spočítat? 20 sérií, 5 zemí">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<main class="studie">
+<h1 id="da-se-turingovou-metodou-odhalit-zradce">Dá se Turingovou metodou odhalit Zrádce?</h1>
+<p><strong>Kompletní studie · 27. 10. 2026 · přepočítáno 2. a 3. 11. 2026 po oponentuře · veřejná verze 5. 11. 2026</strong></p>
+<nav class="obsah" aria-label="Obsah"><p class="obsah-nadpis">Obsah</p><ul>
+<li><a href="#shrnuti-na-jednu-stranku">Shrnutí na jednu stránku</a></li>
+<li><a href="#1-data">1. Data</a></li>
+<li><a href="#2-metoda">2. Metoda</a></li>
+<li><a href="#3-vysledky-hlasovani-20-serii">3. Výsledky: hlasování (20 sérií)</a></li>
+<li><a href="#3b-fryinych-sest-signalu-replikovanych">3b. Fryiných šest signálů, replikovaných</a></li>
+<li><a href="#4-vysledky-zminky-v-titulcich-3-ceske-rady">4. Výsledky: zmínky v titulcích (3 české řady)</a></li>
+<li><a href="#5-hlavni-test-naucit-na-radach-1-a-2-pustit-na-radu-3-slepe-pro-vahy-ne-pro-navrh-mereni-oddil-8">5. Hlavní test: naučit na řadách 1 a 2, pustit na řadu 3 (slepé pro váhy, ne pro návrh měření; oddíl 8)</a></li>
+<li><a href="#6-vesmiry-jednou-trefa-jednou-katastrofa">6. Vesmíry: jednou trefa, jednou katastrofa</a></li>
+<li><a href="#7-chyby-ktere-jsme-v-prubehu-udelali">7. Chyby, které jsme v průběhu udělali</a></li>
+<li><a href="#7b-posledni-hlas-zradce-a-prumer-ktery-lhal">7b. Poslední hlas Zrádce, a průměr, který lhal</a></li>
+<li><a href="#8-cemu-se-neda-verit">8. Čemu se nedá věřit</a></li>
+<li><a href="#9-zaver">9. Závěr</a></li>
+<li><a href="#10-jak-si-to-overit">10. Jak si to ověřit</a></li>
+</ul></nav>
+<p>Pokus o replikaci a rozšíření analýzy, kterou Hannah Fry předvedla na britských <em>The Traitors</em> ve videu „How would Alan Turing have played the Traitors?“, a ke které vydal vlastní video Matt Parker (Stand-up Maths): „Did Hannah Fry crack The Traitors?“. Její postup známe jen z rozborů a zpráv, ne z videa samotného (oddíl 8). Adresy obou videí a ostatních zdrojů jsou v oddílu 10.</p>
+<p>Tohle je plná verze studie k našemu videu o Zrádcích. Je v ní i to, co se do videa nevešlo,
+včetně chyb, které jsme cestou udělali (oddíly 7 a 7b), a toho, čemu se nedá věřit (oddíl 8).</p>
+<blockquote>
+<p><strong>Kdo studii připravil.</strong> Nápad není náš: je Hannah Fry a lidí, se kterými ho připravovala.
+Otázky, námitky a rozhodnutí, co a jak měřit, jsou autorovy. Výpočty, kód a text studie
+připravila podle jeho zadání umělá inteligence (Claude od firmy Anthropic). Když píšeme
+„my&quot;, myslíme autora a AI, která pro něj počítala. Kritický posudek, kterému tu říkáme
+<strong>oponentura</strong>, napsala také AI (Claude), spuštěná zvlášť v roli oponenta s úkolem najít
+v projektu chyby. Není to lidský recenzent. I kontrolu textu před zveřejněním, na kterou
+se studie odvolává v oddílech 7b a 8, dělala AI v roli revizora. Kde chybu našel autor,
+oponentura nebo kontrola textu, píšeme to u ní. Komentář ve videu namluvila AI klonem
+autorova hlasu (ElevenLabs). Hudbu a zvuky ve videu složil program, který napsala AI.
+Upozornění: studie prozrazuje, kolik hráčů a Zrádců zbývalo ve 3. české řadě po 6. a 7. dílu. Jména žádná.</p>
+</blockquote>
+<blockquote>
+<p><strong>Co se změnilo 2. 11. 2026.</strong> Oponentura celý projekt zkritizovala a autor zadal opravy:
+opravit hlasy, doplnit konec britské série, znovu změřit, kde v dílu je kulatý stůl
+(bývá i dřív než v druhé půlce), a předělat zbytek. Hlavní změny:</p>
+<ul>
+<li>parser Wikipedie přehlédl čtyři naverbované Zrádce, jejich hlasy z doby, kdy byli Věrní,
+se počítaly jako hlasy Zrádců (oddíl 7, chyba 8);</li>
+<li>Fryina série je teď celá (10 dílů, skončila 30. 10.);</li>
+<li>„poslední čtvrtina dílu&quot; se už nevydává za kulatý stůl; skutečné okno stolu je změřené
+z titulků a závěr o konkláve (scénách Zrádců mezi sebou) je <strong>opačný</strong> než dřív (oddíl 8);</li>
+<li>všechna čísla jsou z jednoho společného přepočtu, výpisy mají v hlavičce datum
+a otisk dat.
+Hlavní závěry studie se tím nemění. Mění se několik čísel a jeden dílčí závěr.</li>
+</ul>
+</blockquote>
+<p>Studie má tři části, které vznikly postupně a každá odpovídá na jinou otázku:</p>
+<ol>
+<li><strong>Hlasování</strong> — dá se Zrádce poznat podle toho, jak hlasuje? <em>(20 sérií z pěti zemí)</em></li>
+<li><strong>Zmínky v titulcích</strong> — dá se poznat podle toho, kolik se o něm mluví? <em>(3 české řady)</em></li>
+<li><strong>Hlavní test</strong> — naučit se obojí na českých řadách 1 a 2 a pustit to na řadu 3 (slepé pro váhy, ne pro návrh měření; oddíl 8),
+kterou model nikdy neviděl. Včetně Fryiných „vesmírů&quot;, tedy celých skupin Zrádců.</li>
+</ol>
+<hr />
+<h2 id="shrnuti-na-jednu-stranku">Shrnutí na jednu stránku</h2>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th>Co</th>
+<th>Výsledek</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hlasování</strong></td>
+<td>Signál v datech je, ale <strong>mimo trénink je bezcenný</strong> a v Česku míří u plané volby obráceně</td>
+</tr>
+<tr>
+<td><strong>Zmínky v titulcích</strong></td>
+<td><strong>Funguje.</strong> Mimo trénink AUC 0,81–0,90, a to ve všech třech řadách</td>
+</tr>
+<tr>
+<td><strong>Oslovení (5. pád)</strong></td>
+<td><strong>Nic.</strong> AUC 0,54, p = 0,68</td>
+</tr>
+<tr>
+<td><strong>Vesmíry (skupiny)</strong></td>
+<td><strong>Nestabilní.</strong> Na 3. řadě dvojice 1. z 91 a po 7. dílu znovu 1. z 66, na 1. řadě ale 67. ze 78 (vše se zmínkami; bez zmínek 72. ze 78, oddíl 6)</td>
+</tr>
+<tr>
+<td><strong>Kde v dílu</strong></td>
+<td>U samotného kulatého stolu je signál zmínek slabý a neprůkazný, nejsilnější je <strong>po stole</strong> (kde je i noční scéna Zrádců)</td>
+</tr>
+<tr>
+<td><strong>Celkový verdikt</strong></td>
+<td>Jako nástroj pro hráče <strong>ne</strong>. Jako postřeh o tom, komu pořad dává prostor, <strong>ano</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Nejdůležitější jediná věta:</strong> to, co v našem provedení funguje, není Turingova matematika na hlasování —
+je to prosté „o kom se mluví&quot;. A ani u toho nevíme jistě, jestli měříme hru, nebo střih.</p>
+<hr />
+<h2 id="1-data">1. Data</h2>
+<h3 id="hlasovaci-cast">Hlasovací část</h3>
+<div class="tabulka"><table>
+<tbody>
+<tr>
+<td>Zdroj</td>
+<td>tabulky hlasování na Wikipedii (cs i en), <code>Special:Export</code></td>
+</tr>
+<tr>
+<td>Rozsah</td>
+<td><strong>20 sérií z pěti zemí</strong> — Británie 1–4 a Celebrity 1–2, USA 1–4, Austrálie 1–3, Kanada 1–4, Česko 1–3</td>
+</tr>
+<tr>
+<td>Objem</td>
+<td>438 hráčů, 2 689 hlasů ve 202 kolech (kola s aspoň šesti hlasujícími)</td>
+</tr>
+<tr>
+<td>Stav</td>
+<td>Fryina série (Celebrity 2) celá, 10 dílů, stažená znovu 2. 11. 2026; česká 3. řada do 7. dílu</td>
+</tr>
+<tr>
+<td>Naverbovaní Zrádci</td>
+<td>28 v 17 sériích (a 61 Zrádců od začátku); do naverbování se počítají jako Věrní. Parser od 2. 11. hlásí poznámku o naverbování, ke které nenašel hráče</td>
+</tr>
+<tr>
+<td>Chybí</td>
+<td>Nový Zéland (na anglické Wikipedii nemá samostatné stránky)</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="zminky-z-titulku">Zmínky z titulků</h3>
+<div class="tabulka"><table>
+<tbody>
+<tr>
+<td>Zdroj</td>
+<td>skryté titulky pro neslyšící k dílům zveřejněným na iprima.cz (Prima+), formát WebVTT</td>
+</tr>
+<tr>
+<td>Rozsah</td>
+<td><strong>české řady 1–3, 31 epizod</strong> (12 + 12 + 7), 69 hráčů, 14 Zrádců</td>
+</tr>
+<tr>
+<td>Objem</td>
+<td>asi 2 MB textu, <strong>26 835 titulků</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Video dílů jsme nestahovali a žádnou ochranu jsme neobcházeli.</strong> Použili jsme jen text titulků pro neslyšící, obraz ani zvuk dílů jsme nezpracovávali.</p>
+<hr />
+<h2 id="2-metoda">2. Metoda</h2>
+<h3 id="turinguv-ban">Turingův „ban&quot;</h3>
+<p>Váha jednoho signálu je <code>log₁₀( P(signál | Zrádce) / P(signál | Věrný) )</code>. Jeden ban znamená
+„desetkrát pravděpodobnější u Zrádce&quot;. Váhy se sčítají, protože se sčítají logaritmy — to je
+celý Turingův trik z Bletchley Parku.</p>
+<p><strong>Pozor na jednotku.</strong> Fryiny zveřejněné body (+0,47 za planou volbu, −1,28 za to, že někdo nehlasoval
+na odhaleného Zrádce, −1,73 za snídani s ním) nejsou v banech. Podle rozboru jejího videa
+(Ed Jefferson) počítá přirozený logaritmus poměru, ne logaritmus o základu 10. Sedí to na
+jejích vlastních číslech: <code>ln(23,5 / 14,6) = 0,476</code>. Přepočteno na bany je jejích +0,47
+rovno <strong>+0,204 banu</strong>. Starší verze téhle studie obě jednotky porovnávala přímo, a tím
+rozdíl proti našim váhám zhruba ztrojnásobila.</p>
+<p>Všechny pravděpodobnosti jsou vyhlazené Jeffreysovým <code>α = 0,5</code>, aby nulový počet nedělal
+nekonečné váhy.</p>
+<h3 id="hlasovaci-signaly">Hlasovací signály</h3>
+<p>Každý hlas se zařadí do jedné ze čtyř kategorií podle toho, co se v kole stalo:</p>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th>Kategorie</th>
+<th>Kdy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>hlas na člověka, který byl vyhoštěn a ukázal se jako Zrádce</td>
+</tr>
+<tr>
+<td>B</td>
+<td>hlas na člověka, který byl vyhoštěn a byl Věrný</td>
+</tr>
+<tr>
+<td>C</td>
+<td>planá volba — terč dostal nejvýš jeden hlas, zatímco jiný měl tři a víc</td>
+</tr>
+<tr>
+<td>D</td>
+<td>ostatní</td>
+</tr>
+</tbody>
+</table></div>
+<p>Kola s méně než šesti hlasujícími se vynechávají jako endgame, ne kulatý stůl.</p>
+<h3 id="zminkovy-signal">Zmínkový signál</h3>
+<p>Pro každou epizodu: podíl zmínek hráče na všech zmínkách lidí, kteří jsou v té epizodě
+ještě ve hře, dělený rovnoměrným podílem <code>1/n</code>. <strong>Hodnota 1,00 = mluví se o něm přesně
+tolik, kolik vychází náhodou.</strong> Poměr se zařadí do jednoho ze čtyř pásem (hranice 0,5 / 1 / 2,
+dané předem) a pásmu se přiřadí váha v banech.</p>
+<p>Skóre hráče je <strong>průměr</strong> banů na epizodu, ne součet — jinak by vyhrával ten, kdo přežil déle.</p>
+<h3 id="vesmiry-banburismus">Vesmíry (Banburismus)</h3>
+<p>Místo hodnocení jednotlivců se vyjmenují <strong>všechny možné skupiny Zrádců</strong> mezi aktivními
+hráči a každá se ohodnotí věrohodností. Z toho se spočítá, jak pravděpodobné je u každého
+jednotlivce, že je Zrádce. Je to přesně to, co dělala Fry a co dělal Turing s možnými
+nastaveními Enigmy.</p>
+<p>Věrohodnost jednoho vesmíru = hlasovací váhy jeho členů + párový člen (jak často míří hlas
+na Zrádce proti náhodě) + zmínkové bany jeho členů.</p>
+<hr />
+<h2 id="3-vysledky-hlasovani-20-serii">3. Výsledky: hlasování (20 sérií)</h2>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th>Zjištění</th>
+<th>Číslo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Věrní vyhostili Zrádce</td>
+<td><strong>63 ze 180 hlasování</strong> (35,0 %), náhoda dává 39,0 (21,7 %), p = 0,0001</td>
+</tr>
+<tr>
+<td>Zrádci hlasují na Zrádce</td>
+<td><strong>1,52×</strong> častěji, než dovoluje nabídka terčů</td>
+</tr>
+<tr>
+<td>Věrní hlasují na Zrádce</td>
+<td>1,20×</td>
+</tr>
+<tr>
+<td>Nejsilnější váha našeho modelu</td>
+<td><strong>+0,076 banu</strong> (Fryino +0,47 je +0,204 banu, viz jednotky)</td>
+</tr>
+<tr>
+<td>Nejsilnější váha vůbec, v našem čtení Fryiny definice plané volby</td>
+<td><strong>+0,281 banu</strong> na britských řadách, p = 0,145</td>
+</tr>
+<tr>
+<td>Křížové ověření (nauč na 19, testuj na vynechané)</td>
+<td>AUC <strong>0,554</strong>, lepší než náhoda u 13 z 20 sérií (náhodou čekáme 10; znaménkový test p ≈ 0,26)</td>
+</tr>
+<tr>
+<td>Vesmíry přes všech 20 sérií</td>
+<td>skutečná skupina v horních <strong>49,7 %</strong> (náhoda 50 %)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Výklad.</strong> Signál v datech prokazatelně je — Věrní vyhostili Zrádce výrazně častěji, než by
+dávala náhoda, a to není sporné. Nejsilnější váha našeho čtyřkategoriového modelu je
++0,076 banu; Fryino nejsilnější zveřejněné kladné číslo je po přepočtu +0,204 banu, tedy
+<strong>skoro třikrát víc</strong>. Když se její definice plané volby zreplikuje tak, jak ji čteme
+(oddíl 3b), vyjde na britských řadách +0,281 banu, tedy ještě o něco víc než u ní — jenže
+na 208 hlasech a s p = 0,145. Žádné z těch čísel nestačí na rozhodnutí o konkrétním
+člověku. AUC 0,554 je skoro náhoda.</p>
+<blockquote>
+<p><strong>Opraveno 2. 11. 2026.</strong> Před opravou naverbovaných Zrádců a doplněním Fryiny série tu
+stálo AUC 0,573 a lepší než náhoda u 15 z 20 sérií. Fryina série sama klesla z 0,507 na
+0,400. Tehdejší „p = 0,04&quot; výpis neuvádí; sedí na oboustranný znaménkový test pro 15 z 20
+(0,041), tedy nejspíš vznikl tak. Pro 13 z 20 dává tentýž test 0,26.</p>
+</blockquote>
+<p><strong>Zrádci jedou s davem.</strong> Hlas na toho, kdo u stolu nakonec odejde, dají v <strong>50,9 %</strong>
+případů, Věrní v <strong>44,9 %</strong> (p = 0,013, permutace hlasů uvnitř kola). Je to menší rozdíl než
+u předchozího řádku, ale vyšel průkazně a dává smysl: Zrádce si nemůže dovolit být jediný, kdo
+hlasuje jinak, tak se přidá k většině a nechá ostatní vybrat za sebe. (Pozor na počet testů,
+oddíl 8: tenhle by přísnou opravu na mnohonásobné testování nepřežil.)</p>
+<blockquote>
+<p><strong>Opraveno 30. 10. 2026 po vlastním auditu.</strong> Dřív tu stálo 46,0 % proti 41,0 % (p = 0,040),
+protože se signál počítal přes všech 200 kol včetně <strong>23 kol, ve kterých nikdo vyhoštěn
+nebyl</strong> (266 hlasů). Takový hlas ale není netrefa, je to jiná situace, a obě procenta
+stlačoval dolů. Po omezení na kola s vyhoštěním vychází nález <strong>silněji</strong>, ne slaběji.</p>
+</blockquote>
+<p><strong>Vedlejší zjištění, u kterého je potřeba dát pozor na sílu:</strong> dvojice dvou Zrádců na sebe
+hlasuje v <strong>20,8 %</strong> případů, smíšená ve 14,4 % a dva Věrní v 11,3 %. Na českých řadách je
+rozdíl nejvýraznější (26,0 % proti 10,8 %). Směr tedy jde proti představě, že se Zrádci
+kryjí. <strong>Průkazné to ale není:</strong> p = 0,23 přes všech 20 sérií a p = 0,26 na českých řadách,
+kde je dvojic dvou Zrádců jen 50 (přes všech 20 sérií 504). Je to zajímavý směr, ne doložený
+nález, a tak se o něm má mluvit. (Před opravou dat 2. 11. tu stálo p = 0,103.)</p>
+<hr />
+<h2 id="3b-fryinych-sest-signalu-replikovanych">3b. Fryiných šest signálů, replikovaných</h2>
+<p>Autor 29. 10. 2026: <em>„nemyslím si, že to byl jediný faktor, který zohledňovala.. projeď to
+její původní video a to dodatečné vysvětlující video od stand up math ještě jedou a zcheckni,
+co reálně řeší&quot;</em></p>
+<p>Měl pravdu a starší verze téhle studie to měla zjednodušené. Podle rozboru videa
+<em>How would Alan Turing have played the Traitors?</em> (rozbor Eda Jeffersona a zpravodajství,
+zdroje v oddílu 10) boduje Fry <strong>šest</strong> věcí, ne jednu:</p>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Co Fry boduje</th>
+<th>Umíme změřit?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>planá volba</td>
+<td>ano</td>
+</tr>
+<tr>
+<td>2</td>
+<td>hlas na Zrádce v kole, kdy byl vyhoštěn</td>
+<td>ano</td>
+</tr>
+<tr>
+<td>3</td>
+<td>…a nikdy předtím na něj nehlasoval</td>
+<td>ano</td>
+</tr>
+<tr>
+<td>4</td>
+<td>nehlasování na Zrádce v kole, kdy byl vyhoštěn</td>
+<td>ano</td>
+</tr>
+<tr>
+<td>5</td>
+<td>v minulosti na hráče hlasoval Zrádce, který už je vyhoštěný</td>
+<td>ano</td>
+</tr>
+<tr>
+<td>6</td>
+<td>byl v poslední skupině u snídaně se Zrádcem, který byl později vyhoštěn</td>
+<td><strong>ne</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Šestý se z veřejných tabulek hlasování spočítat nedá; kdo s kým seděl u snídaně, je jen ve
+vysílání. Zbylých pět jsme spočítali.</p>
+<h3 id="replikace-jeji-plane-volby">Replikace její plané volby</h3>
+<p>Fry planou volbu nepočítá přes celý pořad. Jak přesně ji vymezuje, víme jen z druhé ruky
+(zdroje v oddílu 10): <strong>jen první tři kulaté stoly</strong> a 23,5 % proti 14,6 % na 205 hlasech uvádí
+rozbor Eda Jeffersona, <strong>jen kola, ve kterých odešel Věrný</strong> píše jen novinářka The Tab
+(22. 10. 2026) a sama Fry podle PinkNews mluví o „prvních třech epizodách&quot;. Říkáme tomu
+proto „naše čtení její definice&quot;. Když se to vezme takhle:</p>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th></th>
+<th>Zrádci</th>
+<th>Věrní</th>
+<th>poměr</th>
+<th>nat</th>
+<th>ban</th>
+<th>příležitostí</th>
+<th>p</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>britské řady, naše čtení Fryiny definice</td>
+<td><strong>24,3 %</strong></td>
+<td>12,9 %</td>
+<td>1,89</td>
+<td>+0,648</td>
+<td>+0,281</td>
+<td>208</td>
+<td>0,145</td>
+</tr>
+<tr>
+<td>britské řady, naše širší definice</td>
+<td>17,0 %</td>
+<td>13,2 %</td>
+<td>1,29</td>
+<td>+0,257</td>
+<td>+0,112</td>
+<td>926</td>
+<td>0,291</td>
+</tr>
+<tr>
+<td><strong>české řady, naše čtení Fryiny definice</strong></td>
+<td>5,0 %</td>
+<td>10,9 %</td>
+<td>0,46</td>
+<td>−0,454</td>
+<td>−0,197</td>
+<td>139</td>
+<td>0,515</td>
+</tr>
+<tr>
+<td><strong>české řady, jen kola s vyhoštěným Věrným</strong></td>
+<td><strong>2,4 %</strong></td>
+<td>11,6 %</td>
+<td>0,21</td>
+<td>−1,196</td>
+<td>−0,519</td>
+<td>256</td>
+<td><strong>0,036</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Fryinu číslu jsme blízko.</strong> Ona podle Jeffersona uvádí 23,5 % u Zrádců na 205 hlasech,
+nám vychází 24,3 % na 208 hlasech. U Věrných uvádí 14,6 %, nám vyšlo 12,9 %. Jefferson sám
+napočítal 24 % proti 15,6 %. (Před opravou naverbovaných Zrádců 2. 11. nám vycházelo 23,7 %.)</p>
+<p>Z toho plynou tři věci, a žádná z nich není, že by počítala špatně:</p>
+<ol>
+<li><strong>Na definici záleží víc než na datech.</strong> Tatáž data, jen širší definice, a poměr spadne
+z 1,89 na 1,29.</li>
+<li><strong>Ani v její definici to není průkazné.</strong> Po obou zúženích zbývá 208 hlasů a p = 0,145.</li>
+<li><strong>Na českých řadách to jde na opačnou stranu, a tam průkazně.</strong> V kolech, kde odešel
+Věrný, dělají naši Zrádci planou volbu skoro pětkrát méně často než Věrní (p = 0,036).
+Průkazné je to ale jen u tohoto jednoho způsobu počítání a jen na 256 hlasech.</li>
+</ol>
+<h3 id="zbyle-ctyri-signaly">Zbylé čtyři signály</h3>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th>signál</th>
+<th>Británie</th>
+<th>Česko</th>
+<th>všech 20 sérií</th>
+<th>p (20 sérií)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2 hlas na odhaleného Zrádce</td>
+<td>−0,068</td>
+<td>−0,113</td>
+<td>−0,074</td>
+<td>0,109</td>
+</tr>
+<tr>
+<td>3 …a až teď poprvé</td>
+<td>−0,053</td>
+<td>−0,096</td>
+<td>−0,068</td>
+<td>0,219</td>
+</tr>
+<tr>
+<td>4 nehlasoval na odhaleného Zrádce</td>
+<td>+0,033</td>
+<td>+0,153</td>
+<td>+0,060</td>
+<td>0,153</td>
+</tr>
+<tr>
+<td>5 v minulosti na něj hlasoval Zrádce</td>
+<td>−0,149</td>
+<td><strong>+0,242</strong></td>
+<td>+0,120</td>
+<td>0,439</td>
+</tr>
+</tbody>
+</table></div>
+<p>(v banech; kladné číslo = častější u Zrádců)</p>
+<p><strong>Žádný z nich nevyšel průkazně.</strong> Signál 5 míří v Česku na opačnou stranu než v Británii.
+U signálu 4 je <strong>znaménko nejisté</strong>. Fry podle zpravodajství dává za nehlasování na
+odhaleného Zrádce −1,28 bodu. Jestli záporný bod znamená „spíš Věrný&quot;, žádný zdroj u tohoto
+bodu výslovně neříká; Jefferson píše jen obecně, že víc bodů znamená spíš Zrádce
+(oddíl 10). <strong>Pokud</strong> to tak je, vychází nám opačné znaménko: u nás je
+nehlasování slabě na stranu viny, na britských řadách nejslabší (+0,033).</p>
+<p><strong>Výhrada k tomuhle oddílu.</strong> Signály 2 až 5 jsou definované pomocí role, která se odhalí až
+vyhoštěním. Permutační test proto prohazuje nálepky mezi hráči a definici signálu nechává
+být; je to standardní label-permutation, ale není to totéž co test na předpovědi dopředu.</p>
+<hr />
+<h2 id="4-vysledky-zminky-v-titulcich-3-ceske-rady">4. Výsledky: zmínky v titulcích (3 české řady)</h2>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th></th>
+<th>Zrádci</th>
+<th>Věrní</th>
+<th>v banech</th>
+<th>AUC</th>
+<th>p</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>celá epizoda</td>
+<td><strong>1,58</strong></td>
+<td>0,89</td>
+<td>+0,25</td>
+<td>0,72</td>
+<td>0,024</td>
+</tr>
+<tr>
+<td>poslední čtvrtina epizody</td>
+<td><strong>1,92</strong></td>
+<td>0,83</td>
+<td><strong>+0,36</strong></td>
+<td>0,75</td>
+<td>0,047</td>
+</tr>
+<tr>
+<td>oslovení (5. pád)</td>
+<td>1,13</td>
+<td>0,98</td>
+<td>+0,06</td>
+<td>0,54</td>
+<td>0,68</td>
+</tr>
+</tbody>
+</table></div>
+<p>Po řadách (poslední čtvrtina):</p>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th>řada</th>
+<th>Zrádci</th>
+<th>Věrní</th>
+<th>AUC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. řada (12 epizod, 5 Zrádců)</td>
+<td>1,50</td>
+<td>0,91</td>
+<td>0,71</td>
+</tr>
+<tr>
+<td>2. řada (12 epizod, 6 Zrádců)</td>
+<td>2,23</td>
+<td>0,77</td>
+<td>0,77</td>
+</tr>
+<tr>
+<td>3. řada (7 epizod, 3 Zrádci)</td>
+<td>2,11</td>
+<td>0,82</td>
+<td>0,80</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Poslední čtvrtina není kulatý stůl.</strong> Do 2. 11. tu stálo „poslední čtvrtina (kulatý
+stůl)&quot;. Oponentura ukázala, že na konci dílu je i noční scéna Zrádců a že kulatý stůl bývá
+i v první polovině dílu. Skutečné okno stolu z titulků je v oddílu 8.</p>
+<p>Čísla se po opravě titulků 2. 11. (oddíl 7, chyba 10) pohnula jen v setinách.</p>
+<p><strong>Zmínkový signál je skoro pětkrát silnější než nejsilnější váha našeho hlasovacího modelu</strong>
+(+0,364 proti +0,076 banu) a zhruba o třetinu silnější než planá volba v našem čtení Fryiny
+definice na britských řadách (+0,281 banu). Opakuje se ve všech třech řadách; první řada je
+slabší než zbylé dvě.</p>
+<h3 id="sonda-osloveni-5-padem-a-proc-je-jeho-selhani-dulezite">Sonda: oslovení 5. pádem, a proč je jeho selhání důležité</h3>
+<p>Chtěli jsme „kdo koho obviňuje&quot;. Na to titulky nestačí: <strong>nemají jmenovky mluvčích.</strong>
+Střídání mluvčích značené je (asi třetina titulků začíná pomlčkou), ale to říká jen
+„promluvil někdo jiný&quot;, ne kdo.</p>
+<p>Čeština ale nabízí náhradu. Když někdo použije jméno v 5. pádě, tedy v tvaru, kterým se
+v češtině volá, je to <strong>přímé oslovení</strong> — kontakt tváří v tvář, ne zmínka za zády.</p>
+<p><strong>Výsledek je nula.</strong> AUC 0,54, p = 0,68; po vyloučení epizody odchodu jsou Zrádci v 1. řadě
+dokonce <em>pod</em> Věrnými.</p>
+<p><strong>Jak silný ten test vlastně je.</strong> Autor 29. 10. 2026: <em>„myslím si, že se hráči navzájem
+velmi oslovují, i zrádce, prootže spolu furt mluví. otázka ale je, jak se to dostane do
+střihu&quot;</em>. Je to správná námitka a nula sama o sobě neznamená, že se to neděje. Oslovení je
+v titulcích vzácné: <strong>639 oslovení na 4 728 zmínek</strong> (13,5 %) a <strong>u 479 ze 713 řádků
+hráč-epizoda (67 %) nepadne ani jedno</strong>. (Níž v textu stojí 53 % — to je tentýž jev
+měřený na jiném jmenovateli: jen na hráčích, kteří v dané epizodě ještě hráli,
+a v epizodách, kde vůbec nějaké oslovení padlo.)</p>
+<p>Proto jsme spočítali sílu testu: nasimulovali jsme efekt dané velikosti na skutečném
+rozdělení počtů a zjistili, jak často ho permutační test při našem vzorku zachytí.</p>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th>skutečný efekt</th>
+<th>test ho najde (p &lt; 0,05)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>žádný rozdíl</td>
+<td>4 % (to je hladina testu, sedí)</td>
+</tr>
+<tr>
+<td>o pětinu víc</td>
+<td>15 %</td>
+</tr>
+<tr>
+<td>o polovinu víc</td>
+<td>36 %</td>
+</tr>
+<tr>
+<td><strong>jako u zmínek (1,58 / 0,90, tedy 1,76×)</strong></td>
+<td><strong>46 %</strong></td>
+</tr>
+<tr>
+<td>dvojnásobek</td>
+<td>60 %</td>
+</tr>
+<tr>
+<td>dva a půl násobek</td>
+<td>80 %</td>
+</tr>
+</tbody>
+</table></div>
+<p>(Přepočteno 2. 11. s pevným pořadím hráčů, oddíl 7, chyba 11; dřív 6, 16, 33, 49, 66, 81 %.)</p>
+<p><strong>A nejspíš to ani neměří hráče.</strong> Autor 29. 10. 2026: <em>„btw hodně oslovení v 5. pádu
+bude od hradního pána“</em>. Je to oprávněná námitka. Vzorek z titulků ji dokládá:
+„(jméno), předstup“, „(jméno), pokračuješ“, „(jméno), řada je na tobě“ (jména hráčů
+vynechána) — to všechno říká moderátor, když u stolu vyvolává. Rozlišit to nejde, protože
+titulky nemají jmenovky mluvčích; hrubý odhad z kontextu najde formuli moderátora
+u 14 % oslovení a řeč hráče u 12 %, zbytek nerozhodne. Měřeno tedy není podezření, ale
+z velké části pořad sám.</p>
+<p>Zkusili jsme to podepřít i druhou cestou: kdyby moderátor rozdával oslovení podle pořadí,
+měla by mít rovnoměrnější rozdělení než zmínky. <strong>Nevyšlo to</strong> — oslovení mají rozptyl
+větší (směrodatná odchylka 1,73 proti 0,94 u zmínek v celé epizodě), protože 53 % hodnot je
+nula. Hypotéza tedy neplatí a jako doklad se nepoužívá.</p>
+<p><strong>Takže nulový výsledek u 5. pádu nedokazuje, že se nic neděje.</strong> I efekt stejně velký jako
+u zmínek bychom tímhle testem zachytili v méně než polovině případů. Je to málo dat, ne nález.
+Tvrzení dřívější verze, že <em>„kdyby hráči Zrádce podezírali, muselo by se to projevit právě
+tam&quot;</em>, neplatí a je odtud pryč.</p>
+<hr />
+<h2 id="5-hlavni-test-naucit-na-radach-1-a-2-pustit-na-radu-3-slepe-pro-vahy-ne-pro-navrh-mereni-oddil-8">5. Hlavní test: naučit na řadách 1 a 2, pustit na řadu 3 (slepé pro váhy, ne pro návrh měření; oddíl 8)</h2>
+<p>Všechno předchozí bylo buď popisné, nebo křížově ověřené jen na hlasování. <strong>Tohle je jediný
+poctivý test celého postupu</strong>: váhy se učí výhradně na českých řadách 1 a 2 a pak se bez
+jakékoli úpravy pustí na řadu 3.</p>
+<h3 id="co-se-model-naucil-jen-z-rad-1-a-2">Co se model naučil (jen z řad 1 a 2)</h3>
+<p><strong>Hlasovací váhy</strong> — všechny mizivé, žádná nepřesahuje desetinu banu:</p>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th>kategorie</th>
+<th>Zrádci</th>
+<th>Věrní</th>
+<th>banů</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A, hlas na vyhoštěného Zrádce</td>
+<td>10</td>
+<td>58</td>
+<td><strong>−0,084</strong></td>
+</tr>
+<tr>
+<td>B, hlas na vyhoštěného Věrného</td>
+<td>20</td>
+<td>85</td>
+<td>+0,042</td>
+</tr>
+<tr>
+<td>C, planá volba</td>
+<td>4</td>
+<td>27</td>
+<td>−0,124</td>
+</tr>
+<tr>
+<td>D, ostatní</td>
+<td>16</td>
+<td>67</td>
+<td>+0,051</td>
+</tr>
+</tbody>
+</table></div>
+<p>Párový násobitel: Zrádce 2,82×, Věrný 1,73×.</p>
+<p><strong>Zmínkové váhy</strong> — řádově silnější:</p>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th>pásmo</th>
+<th>Zrádci</th>
+<th>Věrní</th>
+<th>banů</th>
+<th>95% interval (bootstrap přes hráče)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pod 0,5</td>
+<td>7</td>
+<td>110</td>
+<td><strong>−0,503</strong></td>
+<td>−0,80 až −0,26</td>
+</tr>
+<tr>
+<td>0,5–1</td>
+<td>9</td>
+<td>66</td>
+<td>−0,179</td>
+<td>−0,63 až +0,06</td>
+</tr>
+<tr>
+<td>1–2</td>
+<td>25</td>
+<td>58</td>
+<td>+0,305</td>
+<td>+0,05 až +0,48</td>
+</tr>
+<tr>
+<td>nad 2</td>
+<td>14</td>
+<td>28</td>
+<td><strong>+0,372</strong></td>
+<td>+0,14 až +0,64</td>
+</tr>
+</tbody>
+</table></div>
+<p>Všimněte si té asymetrie: <strong>nejsilnější je negativní váha.</strong> „Skoro se o něm nemluví&quot; je
+silnější důkaz, že je Věrný (−0,50), než „mluví se o něm hodně&quot; je důkazem, že je Zrádce
+(+0,37). Model je lepší ve vylučování než v obviňování.</p>
+<p><strong>Jak pevné to je.</strong> Oponentura upozornila, že pásmo „pod 0,5&quot; má jen 7 pozorování
+Zrádce a že jsou to opakovaná pozorování týchž lidí. Bootstrap přes hráče (44 lidí, 2 000
+běhů) dává intervaly v tabulce: oba konce se překrývají a záporná váha je
+silnější než kladná v <strong>78 %</strong> běhů. Platí to tedy většinou, ne jistě. (Na zbylých dvou
+trénincích z kontroly níž vychází 92 % a 85 %.)</p>
+<h3 id="test-na-3-rade-stav-po-6-epizode">Test na 3. řadě (stav po 6. epizodě)</h3>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th>Co</th>
+<th>AUC</th>
+<th>p</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jen hlasování</td>
+<td><strong>0,351</strong></td>
+<td>0,79</td>
+</tr>
+<tr>
+<td>jen zmínky, celá epizoda</td>
+<td>0,895</td>
+<td>0,019</td>
+</tr>
+<tr>
+<td>jen zmínky, celá epizoda, bez epizody odchodu</td>
+<td><strong>0,947</strong></td>
+<td>0,005</td>
+</tr>
+<tr>
+<td>hlasování + zmínky</td>
+<td>0,912</td>
+<td>0,008</td>
+</tr>
+<tr>
+<td>jen zmínky, poslední čtvrtina</td>
+<td>0,930</td>
+<td>0,008</td>
+</tr>
+<tr>
+<td>jen zmínky, poslední čtvrtina, bez epizody odchodu</td>
+<td><strong>0,947</strong></td>
+<td>0,004</td>
+</tr>
+<tr>
+<td>jen zmínky, skutečné okno kulatého stolu</td>
+<td>0,465</td>
+<td>0,57</td>
+</tr>
+<tr>
+<td>jen zmínky, okno stolu, bez epizody odchodu</td>
+<td>0,490</td>
+<td>0,55</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Hlasovací model je horší než náhoda</strong> (0,351). Na zbylých dvou řadách vychází 0,431
+a 0,649, tedy jednou pod náhodou a jednou nad ní. (Do 2. 11. tu stálo 0,403 a 0,684, čísla
+z běhu před přidáním 7. dílu; našla to oponentura.)</p>
+<p><strong>Měřeno jen u kulatého stolu, signál na 3. řadě mizí</strong> (0,465). Zmínky tedy na 3. řadě
+fungují v celém dílu a v poslední čtvrtině, ne v samotném okně stolu. Oddíl 8 to rozebírá. Tři hodnoty na nic neukážou
+spolehlivě; co se z nich dá říct, je, že hlasování mimo trénink nedrží, a že přidání
+k zmínkám výsledek spíš zhoršuje.</p>
+<p>Vyloučení epizody, ve které hráč odešel, výsledek <strong>zlepšilo</strong> (0,895 → 0,947). To je
+důležité: znamená to, že signál netáhne pozornost věnovaná odcházejícím, ta ho naopak ředí.</p>
+<h3 id="kontrola-kazda-rada-jednou-jako-testovana">Kontrola: každá řada jednou jako testovaná</h3>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th>testovaná řada</th>
+<th>hlasování</th>
+<th>zmínky</th>
+<th>zmínky, bez epizody odchodu</th>
+<th>zmínky, jen okno stolu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. řada</td>
+<td>0,649 (p 0,22)</td>
+<td>0,895 (p 0,014)</td>
+<td>0,895 (p 0,014)</td>
+<td>0,825 (p 0,049)</td>
+</tr>
+<tr>
+<td>2. řada</td>
+<td>0,431 (p 0,67)</td>
+<td>0,812 (p 0,026)</td>
+<td>0,701 (p 0,13)</td>
+<td>0,674 (p 0,16)</td>
+</tr>
+<tr>
+<td>3. řada</td>
+<td>0,351 (p 0,79)</td>
+<td>0,895 (p 0,019)</td>
+<td>0,947 (p 0,005)</td>
+<td>0,465 (p 0,57)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Zmínkový signál obstál třikrát ze tří</strong> na mírnějším měření a dvakrát ze tří na přísném
+(u 2. řady p = 0,13, tedy neprůkazně). Měřený jen v okně kulatého stolu obstál jednou ze
+tří. Hlasování neobstálo ani jednou.</p>
+<blockquote>
+<p><strong>Opraveno 2. 11. 2026 (na podnět oponentury).</strong> Tabulka dřív nesouhlasila s uloženým
+výpisem: u 1. a 2. řady byla čísla z běhu před přidáním 7. dílu a u 3. řady stálo
+v posledním sloupci číslo z „poslední čtvrtiny&quot;. Teď jsou všechna z uloženého výpisu
+jednoho společného přepočtu.</p>
+</blockquote>
+<hr />
+<h2 id="6-vesmiry-jednou-trefa-jednou-katastrofa">6. Vesmíry: jednou trefa, jednou katastrofa</h2>
+<p>Tady je výsledek nejzajímavější a zároveň nejvarovnější.</p>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th>testovaná řada</th>
+<th>aktivních / hledaných</th>
+<th>bez zmínek</th>
+<th>se zmínkami</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. řada</td>
+<td>13 / 2</td>
+<td>72. ze 78 (92 %)</td>
+<td>67. ze 78 (86 %)</td>
+</tr>
+<tr>
+<td>2. řada</td>
+<td>14 / 1</td>
+<td>4. ze 14 (29 %)</td>
+<td>2. ze 14 (14 %)</td>
+</tr>
+<tr>
+<td>3. řada</td>
+<td>14 / 2</td>
+<td>21. z 91 (23 %)</td>
+<td><strong>1. z 91 (1 %)</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>(U 2. řady bez zmínek tu do 2. 11. chybně stálo „6. ze 14&quot;. Uložený výpis už tehdy říkal
+4. ze 14; byla to stejná chyba přepisu, jakou oponentura našla v tabulce kontroly
+v oddílu 5.)</p>
+<h3 id="treti-rada-model-trefil-presne">Třetí řada: model trefil přesně</h3>
+<p>Po 6. epizodě zbývali dva neodhalení Zrádci mezi čtrnácti lidmi, tedy 91 možných dvojic.
+Model naučený jen na řadách 1 a 2 dal <strong>skutečnou dvojici Zrádců na první místo z 91.</strong>
+Marginální pravděpodobnosti (3. řada se v době psaní ještě vysílá, proto místo jmen hráčů
+uvádíme písmena a role píšeme v mužském rodě bez ohledu na pohlaví):</p>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th>hráč</th>
+<th>model</th>
+<th>skutečnost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zrádce A</td>
+<td>54,5 %</td>
+<td><strong>ZRÁDCE</strong></td>
+</tr>
+<tr>
+<td>Zrádce B</td>
+<td>26,2 %</td>
+<td><strong>ZRÁDCE</strong></td>
+</tr>
+<tr>
+<td>hráč C</td>
+<td>19,0 %</td>
+<td>Věrný</td>
+</tr>
+<tr>
+<td>hráč D</td>
+<td>18,8 %</td>
+<td>Věrný</td>
+</tr>
+<tr>
+<td>hráč E</td>
+<td>17,3 %</td>
+<td>Věrný</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td>hráč F</td>
+<td>0,0 %</td>
+<td>Věrný</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="potvrzeni-po-7-epizode">Potvrzení po 7. epizodě</h3>
+<p>Sedmá epizoda se odvysílala <strong>až po dokončení analýzy</strong> (29. 10. 2026). Model se od té doby
+nikam neučil, dostal jen o jednu epizodu dat navíc. Vyhoštěn byl jeden Věrný a další Věrný
+byl zavražděn, takže ve hře zůstalo 12 lidí a oba neodhalení Zrádci.</p>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th></th>
+<th>po 6. epizodě</th>
+<th>po 7. epizodě</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>možných dvojic</td>
+<td>91</td>
+<td>66</td>
+</tr>
+<tr>
+<td>skutečná dvojice podle zmínek (celá epizoda)</td>
+<td><strong>1.</strong></td>
+<td><strong>1.</strong></td>
+</tr>
+<tr>
+<td>skutečná dvojice podle zmínek (poslední čtvrtina)</td>
+<td>1.</td>
+<td>2.</td>
+</tr>
+<tr>
+<td>skutečná dvojice podle zmínek (jen okno kulatého stolu)</td>
+<td>17.</td>
+<td>13.</td>
+</tr>
+<tr>
+<td>skutečná dvojice bez zmínek (jen hlasování)</td>
+<td>21. z 91</td>
+<td>15. z 66</td>
+</tr>
+<tr>
+<td>Zrádce A / Zrádce B</td>
+<td>54,5 % / 26,2 %</td>
+<td>56,3 % / 27,6 %</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Je to slabší důkaz, než vypadá.</strong> Pole se zmenšilo z 91 dvojic na 66, takže je to snazší
+úloha, a u měření z poslední čtvrtiny dvojice spadla na druhé místo. Měřeno jen u kulatého
+stolu je skutečná dvojice až 17., resp. 13. Zároveň je to ale
+zkouška, kterou nešlo dopředu ovlivnit: data vznikla až po tom, co byl model hotový.</p>
+<h3 id="prvni-rada-model-se-spletl-jak-nejvic-mohl">První řada: model se spletl, jak nejvíc mohl</h3>
+<p>Skutečná dvojice Zrádců 1. řady skončila <strong>72. ze 78</strong>, tedy mezi nejméně pravděpodobnými.
+AUC marginálů <strong>0,182</strong> — výrazně <em>horší</em> než náhoda. Zmínky to posunuly jen na 67. místo.</p>
+<p><strong>Tohle je ta nejdůležitější tabulka v celé studii.</strong> Jedna řada vypadá jako průlom, druhá
+jako naprosté selhání. Průměr přes tři řady je se zmínkami <strong>34 %</strong> proti náhodným 50 %
+(bez zmínek 48 %, tedy prakticky náhoda; do 2. 11. tu stálo 53 %, spočtené z chybně
+přepsaného 6. místa 2. řady) — rozptyl je tak obrovský, že jediný výsledek nic neznamená.</p>
+<p>Kdybychom studii zastavili u třetí řady, napsali bychom „metoda funguje&quot; a byli bychom vedle.</p>
+<h3 id="proc-vesmiry-selhavaji">Proč vesmíry selhávají</h3>
+<p>Vesmírový model sčítá mnoho slabých, nezávisle odhadnutých členů přes všechny dvojice
+hráčů. Když je každý člen skoro nulový a jeden z nich je systematicky obrácený (párový
+násobitel 2,82× se na 1. řadě zřejmě nechová jako na ostatních), výsledek se převrátí
+celý. Je to křehká konstrukce: <strong>sčítáním slabých signálů nevznikne silný, vznikne jen
+nestabilní.</strong></p>
+<hr />
+<h2 id="7-chyby-ktere-jsme-v-prubehu-udelali">7. Chyby, které jsme v průběhu udělali</h2>
+<p>Čtyři z nich, body 4, 5, 8 a 9, prokazatelně dělaly výsledek lepším, než byl. To je samo
+o sobě poučení: chyba, která výsledek zhorší, se najde sama, protože netěší. Body 8 až 11
+jsme navíc nenašli sami, našla je oponentura.</p>
+<ol>
+<li>
+<p><strong>Přezdívky v titulcích jsme nedohledali do konce.</strong> Titulky 3. řady píšou jedno jméno
+s „y“ místo „i“ (37×) a jiné s „i“ místo „y“ (7×). Ani jedno se bez diakritiky nesloučí
+se základním tvarem jména, takže se ty zmínky nepočítaly. Našli jsme to až při zpracování
+7. epizody výpisem nezařazených slov s velkým písmenem. <strong>Dopad:</strong> všech 37 a 7 výskytů
+je v 7. epizodě (lidé v ní probírají odhaleného Zrádce a podezírají dalšího hráče), takže
+se výsledky za epizody 1 až 6 nezměnily ani o řádek (ověřeno porovnáním tabulky zmínek
+před opravou a po ní: 0 změněných řádků). Bez opravy by ale byl špatně test po 7. epizodě.
+Poučení: výpis nezařazených slov nestačí pustit jednou na začátku, patří ke každé nové
+epizodě.</p>
+</li>
+<li>
+<p><strong>Stahovací skript přepsal hotová data.</strong> Při rate limitu Wikipedie uložil prázdné
+soubory a korpus spadl z 20 sérií na 12. Opraveno: stahuje se do dočasného souboru a
+původní se přepíše, až když se stažení povedlo.</p>
+</li>
+<li>
+<p><strong>Zkrácená varianta „Tom&quot; u jednoho jména</strong> se chytala na běžné české „o tom&quot; a „k tomu&quot;.
+Nafoukla počet zmínek toho hráče ze 48 na 192.</p>
+</li>
+<li>
+<p><strong>Za „ve hře&quot; jsme brali každého, kdo má řádek v tabulce kola</strong> — tedy i dávno vyřazené
+hráče. Ti mají skoro nula zmínek a sráželi průměr Věrných dolů, takže model vypadal lépe.</p>
+</li>
+<li>
+<p><strong>Permutační test prohazoval role uvnitř epizody</strong>, jako by 452 řádků bylo 452 nezávislých
+pozorování. Nejsou: jsou to pořád titíž lidé v řadě epizod. Efektivní vzorek je počet
+<em>lidí</em>, ne řádků. Po opravě spadlo p z 0,0001 na 0,03.</p>
+</li>
+<li>
+<p><strong>Filtr velkých písmen byl rozbitý.</strong> Znaková třída <code>[A-ZÁ-Ž]</code> v Unicode obsahuje i malá
+písmena s háčkem, takže nefiltrovala nic. Opraveno přes <code>isupper()</code>.</p>
+</li>
+</ol>
+<p>Chyby 8 až 11 našla oponentura 31. 10. 2026, opravené jsou od 2. 11. (Chyba 7 je v oddílu 7b.)</p>
+<ol start="8">
+<li><strong>Parser tiše přehlédl čtyři naverbované Zrádce.</strong> Jméno v poznámce „X was recruited as
+a Traitor in Episode N&quot; se neshodovalo se jménem v tabulce hlasování (Fryina série:
+zkrácené jméno s iniciálou příjmení proti celému jménu a kratší přezdívka proti delší;
+americká 1. řada: tabulka soutěžících skončila předčasně na šabloně Wikipedie pro
+řazení jmen; britská 1. řada: v poznámce stálo „became a Traitor&quot;, ne „was recruited&quot;).
+Jejich hlasy z doby, kdy byli Věrní, se počítaly jako hlasy Zrádců. <strong>Dopad:</strong> Fryina
+série v křížovém ověření 0,507 → 0,400 (zároveň s doplněním jejích posledních dílů),
+průměr 0,573 → 0,554. Výsledek tedy chyba <strong>vylepšovala</strong>. Parser teď spáruje i zkratku
+a podmět poznámky a nahlas hlásí poznámku, ke které hráče nenašel.</li>
+<li><strong>„Poslední čtvrtina dílu = kulatý stůl&quot; neplatilo.</strong> Na konci dílu je i noční scéna
+Zrádců a kulatý stůl bývá i v první polovině dílu. Na tom stál závěr, že signál nežije
+na konkláve. Po změření skutečného okna stolu vyšel <strong>opak</strong> (oddíl 8). I tahle chyba
+vylepšovala výsledek, protože dávala uklidňující výklad.</li>
+<li><strong>Kontrola jmen hledala jen chybějící zmínky, ne falešné.</strong> Jméno titulkářky
+v závěrečném titulku se počítalo jako zmínka jedné hráčky, jméno jiné osoby v titulcích
+jako zmínka jednoho hráče a popisky mluvčích („JMÉNO: …&quot;) jako zmínky. Oprava změnila
+22 řádků ze 713. Ruční kontrola 90 náhodných zmínek je popsaná v oddílu 8.</li>
+<li><strong>Výpisy nešly zopakovat a studie citovala staré běhy.</strong> Pořadí hráčů před náhodným
+prohazováním záviselo na pořadí množiny, které se mezi spuštěními Pythonu mění, takže
+tentýž výpočet dával pokaždé trochu jiné p. Tabulka kontroly v oddílu 5 citovala běh
+před přidáním 7. dílu. Opraveno řazením a jedním skriptem, který přepočítá všechny
+výpisy naráz a zapíše do nich datum a otisk dat.</li>
+</ol>
+<hr />
+<h2 id="7b-posledni-hlas-zradce-a-prumer-ktery-lhal">7b. Poslední hlas Zrádce, a průměr, který lhal</h2>
+<p>Obojí vzniklo na autorovo upozornění 30. 10. 2026 a obojí stojí za zapsání: první jako
+otevřený nález pro druhý díl, druhé jako chyba, která se málem dostala
+do videa.</p>
+<h3 id="signal-ktery-maji-fry-i-majda-koho-oznaci-zradce-v-kole-kde-jde-ven">Signál, který mají Fry i Majda: koho označí Zrádce v kole, kde jde ven</h3>
+<p><strong>Není to náš nález.</strong> Autor 30. 10. 2026 upozornil, že ho ve svých seznamech mají
+jak Fry, tak Majda (vědkyně, hráčka 3. české řady, která své ukazatele zveřejňuje), a že
+bychom ho měli změřit:</p>
+<blockquote>
+<p>„velký signál, který používá minimálně majda, je, že zrádce, který je
+vyhlasovaný, tak na tom kulatým stolu, kde je vyhlasovaný, označí dalšího
+zrádce […]&quot;</p>
+</blockquote>
+<p>(Z citace jsme vynechali příklady se jmény hráčů.)</p>
+<p>A týž den o něco později, když jsme signál omylem podali jako náš nález:</p>
+<blockquote>
+<p>„není to můj nález, mluví o tom i Fry i Majda. my to jen chtěli přidat a potvrdit
+a zmínit&quot;</p>
+</blockquote>
+<p>Že ho má i Fry, víme tedy od autora a z napasování na její signál 5 (níž). Ten je širší
+(hlas vyhoštěného Zrádce kdykoli v minulosti, ne jen při odchodu) a jak s ním Fry přesně
+počítá, ze zdrojů nevíme (oddíl 10). Video proto říká jen „podobné má i Fry&quot;
+(na podnět kontroly textu).</p>
+<p>Majdina vlastní definice, jak ji autor téhož dne ocitoval: <em>„hráč co je při odchodu
+označen vyhlasovaným zrádcem, má 2,7x vyšší šanci, že je také zrádce&quot;</em>. Je to její
+nejsilnější ukazatel („Označení zrádcem&quot;, 2,7×). Její číslo a naše 1,93× dělí každé něco
+jiného, srovnává se jen směr.</p>
+<p>Na Fryin seznam to sedí: je to její <strong>signál 5</strong> z oddílu 3b, <em>„v minulosti na hráče
+hlasoval Zrádce, který už je vyhoštěný&quot;</em>. Ona se dívá na terč, tohle měří hlasujícího,
+ale je to tentýž jev z druhé strany. <strong>Naše je na tom jen to měření.</strong></p>
+<p>Spočítáno napříč 20 sériemi:</p>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th></th>
+<th>podíl</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vyhoštěný Zrádce označil jiného Zrádce</td>
+<td><strong>33,3 %</strong> (20 z 60)</td>
+</tr>
+<tr>
+<td>Zrádce v kole, kde vyhoštěn nebyl</td>
+<td>21,8 % (105 z 482)</td>
+</tr>
+<tr>
+<td>vyhoštěný Věrný označil Zrádce</td>
+<td>27,4 % (29 ze 106)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Směr sedí: poměr 1,53× proti běžnému kolu.</strong> Na českých řadách 1,38×, ale
+tam je to jen 3 případy z 9.</p>
+<p><strong>Námitka a jak ji to přežilo.</strong> Kontrolní řádek (vyhoštěný Věrný, 27,4 %) ukazoval,
+že část rozdílu může dělat prostá skutečnost, že ke konci hry je mezi zbývajícími
+Zrádců poměrně víc. Autor se zeptal, jestli se to dá zohlednit. Dá, a přesněji než
+dělením na půlky hry: každý hlas se porovná s tím, kolik Zrádců bylo <strong>v tom kole</strong>
+mezi možnými terči:</p>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th>kdo hlasuje</th>
+<th>pozorováno z očekávaného</th>
+<th>poměr</th>
+<th>p</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Zrádce v kole, kde jde sám ven</strong></td>
+<td>20 z 10,4</td>
+<td><strong>1,93×</strong></td>
+<td><strong>0,004</strong></td>
+</tr>
+<tr>
+<td>Zrádce v kole, kde ven nejde</td>
+<td>105 z 72,7</td>
+<td>1,44×</td>
+<td>0,157</td>
+</tr>
+<tr>
+<td>Věrný v kole, kde jde sám ven</td>
+<td>29 z 22,7</td>
+<td>1,28×</td>
+<td>0,201</td>
+</tr>
+</tbody>
+</table></div>
+<p>Po očištění signál <strong>obstál a je průkazný</strong>. Dvě kontroly ho drží: u Věrného v jeho
+posledním kole se nic takového neděje, takže to není efekt „posledního kola&quot; obecně;
+a v první polovině hry vychází 2,07× (p = 0,018), takže to není ani efekt konce hry.
+Těch 20 případů je 20 různých lidí, pseudo-opakování tu není. <strong>Ve videu je to část
+o posledním hlasu Zrádce</strong>, s tím, že vodítko sledují Fry i Majda a naše je jen měření.</p>
+<p><strong>Proč to Zrádce dělá, data neříkají.</strong> Pracovní verze videa do 2. 11. říkala „Nekryjí se,
+ukazují na své&quot;. To je výklad motivu, ne měření (upozornila na to oponentura). Netestovaná
+zůstává i obyčejnější možnost: odcházející Zrádce dá hlas tomu, kdo byl u stolu druhý
+nejpodezřelejší, a ten bývá Zrádcem. Video teď říká jen směr.</p>
+<p>Na českých řadách samotných to průkazné není (3 z 9, p = 0,117) — je to málo případů.</p>
+<h3 id="chyba-kterou-chytil-autor-prumer-s-opacnym-znamenkem">Chyba, kterou chytil autor: průměr s opačným znaménkem</h3>
+<p>Pracovní verze videa chvíli tvrdila: <em>„kdo označí skutečného Zrádce, je spíš Věrný&quot;</em>, na
+základě toho, že hlas na odhaleného Zrádce dalo 42,9 % Zrádců proti 49,7 %
+Věrných, tedy 0,86× (po opravě dat 2. 11.: 40,9 % proti 48,7 %, 0,84×). Autor:</p>
+<blockquote>
+<p>„ve chvíli, kdy je jasný, že bude zrádce vyhlasovaný, tak se k hlasování pro
+něj přidají i další zrádci.&quot;</p>
+</blockquote>
+<p>Po rozdělení podle toho, jak jednoznačné to hlasování bylo:</p>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th>jak jasné to bylo</th>
+<th>Zrádci</th>
+<th>Věrní</th>
+<th>poměr</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>těsné (pod 40 % hlasů)</td>
+<td>8,6 % (35)</td>
+<td>14,2 % (204)</td>
+<td><strong>0,60×</strong></td>
+</tr>
+<tr>
+<td>střední (40 až 60 %)</td>
+<td>80,0 % (30)</td>
+<td>52,2 % (159)</td>
+<td><strong>1,53×</strong></td>
+</tr>
+<tr>
+<td>jasné (nad 60 % hlasů)</td>
+<td>93,5 % (46)</td>
+<td>76,6 % (231)</td>
+<td><strong>1,22×</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Ve dvou pásmech ze tří platí opak toho, co říkal průměr.</strong> Zrádci drží
+zpátky, dokud je výsledek nejistý, a jakmile je jasno, přidají se k většině
+<em>ochotněji</em> než Věrní. Průměr přes všechna kola to smíchal a vyšlo z toho
+opačné znaménko — učebnicový Simpsonův paradox.</p>
+<p>Tvrzení je z videa pryč a scéna, která na něm stála, zrušená. <strong>Zapsáno jako
+chyba číslo 7</strong>, i když se do zveřejněné verze nedostala: právě proto, že
+průměr vypadal věrohodně a kontrolu vyžádal až autor, ne ten, kdo počítal.</p>
+<hr />
+<h2 id="8-cemu-se-neda-verit">8. Čemu se nedá věřit</h2>
+<ul>
+<li><strong>Nevíme, jestli měříme hru, nebo střih.</strong> Tvůrci vědí, kdo je Zrádce, a mohou mu (i bez
+záměru) dávat víc prostoru. <strong>Hráč uvnitř hry ten signál použít nemůže</strong> — konkláve Zrádců nevidí a střih
+nezná. Divák role zná z vysílání, takže jemu nic nového neprozradí; ukazuje hlavně, komu
+pořad dává prostor (upozornila na to oponentura). Oslovení nám tenhle výklad nepotvrdí ani nevyvrátí: test je na něj
+příliš slabý (oddíl 4).
+<ul>
+<li><strong>Konkláve Zrádců vyloučit nejde. Do 2. 11. 2026 tu stálo opak.</strong> Otázka zní, jestli
+signál nevzniká hlavně tím, že se Zrádci jmenují mezi sebou na konkláve a v noci.
+Podle mluvčích scény rozdělit nejde, podle času ano.
+<ul>
+<li>
+<p><strong>Staré měření</strong> bralo poslední čtvrtinu dílu jako kulatý stůl a vyšlo, že signál je
+tam silnější než vepředu. Oponentura ukázala, že v poslední čtvrtině je i noční
+scéna Zrádců a že kulatý stůl bývá i v první polovině dílu (autor 2. 11.: „někdy se
+stane, že je kulatý stůl i dřív, než v druhé půlce&quot;).</p>
+</li>
+<li>
+<p><strong>Nové měření</strong> bere skutečné okno stolu z titulků: od přivítání moderátorem („Hráči,
+vítejte zpět u kulatého stolu&quot;) po odhalení role vyhoštěného. 17 dílů se našlo
+automaticky (u každého máme zapsanou větu, kterou okno končí), 14 je určených ručně,
+každý se zapsaným zdůvodněním: tři první díly bez vyhnanství (bez okna), dvě finále
+(bráno jen poslední kulatý stůl, ne hlasování u ohně), pět dílů bez obvyklé věty
+moderátora nebo výzvy k odhalení role a čtyři díly, ve kterých vyhoštěný odhalil roli
+volnou větou („A Bůh je věrný jako já&quot;). Okno je odhad podle titulků bez jmenovek
+mluvčích, ne přesná hranice.
+(3. 11. opraveno dvakrát, obě chyby našla kontrola textu před zveřejněním: tu chybně
+stálo 22 a 9; a výraz pro odhalení role neznal „jsem byl věrný&quot; a podobné, takže
+u sedmi dílů okno skončilo už na výzvě a uřízlo loučení. Čísla níž jsou po obou
+opravách.)
+Díl se pak dělí na tři části. Jen díly se stolem, p je permutace rolí mezi hráči
+uvnitř řady:</p>
+<div class="tabulka"><table>
+<thead>
+<tr>
+<th>část dílu</th>
+<th>Zrádci</th>
+<th>Věrní</th>
+<th>AUC</th>
+<th>p</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>před stolem (ráno, mise, zpovědnice, začátek s konkláve)</td>
+<td>1,67</td>
+<td>0,86</td>
+<td>0,69</td>
+<td>0,003</td>
+</tr>
+<tr>
+<td><strong>u kulatého stolu</strong></td>
+<td>1,33</td>
+<td>0,93</td>
+<td>0,59</td>
+<td><strong>0,26</strong></td>
+</tr>
+<tr>
+<td><strong>po stole</strong> (rozhovory po vyhlášení, noční scéna Zrádců, upoutávka)</td>
+<td><strong>2,21</strong></td>
+<td>0,75</td>
+<td><strong>0,77</strong></td>
+<td><strong>0,0002</strong></td>
+</tr>
+<tr>
+<td>poslední čtvrtina (staré měření)</td>
+<td>1,76</td>
+<td>0,84</td>
+<td>0,73</td>
+<td>0,025</td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li>
+<p><strong>Výsledek:</strong> u samotného stolu je rozdíl malý a neprůkazný. Nejsilnější je po stole,
+kde je mimo jiné noční scéna Zrádců, a silný je i před stolem. Ve slepém testu na
+3. řadě (oddíl 5) zmínky jen z okna stolu nefungují vůbec (AUC 0,465).</p>
+</li>
+<li>
+<p><strong>Co z toho plyne:</strong> výklad „Zrádci se jmenují mezi sebou&quot; vyloučit nejde, data ho
+spíš podporují. Dokázaný ale není: „po stole&quot; obsahuje i rozhovory o vyhoštěném
+a upoutávku na další díl. Noční scénu samotnou jsme neoddělili, protože ji titulky
+spolehlivě neohraničí. Pro hráče z toho nic neplyne: u stolu, kde jediné slyší všechny,
+je rozdíl malý a neprůkazný (na 1. řadě ve slepém testu průkazný byl, na 3. ne).</p>
+</li>
+</ul>
+</li>
+<li><strong>Druhou výhradu vyloučit nejde taky.</strong> Kulatý stůl je sestříhaný stejně jako zbytek
+dílu. Rozdíl mezi „hráči ho podezírají&quot; a „tvůrci mu dali prostor&quot; z našich dat
+nevyčteme a nebudeme předstírat, že ano.</li>
+</ul>
+</li>
+<li><strong>Tři řady jsou málo.</strong> Vesmíry to ukazují nejlépe: jeden skvělý výsledek a jeden
+katastrofální.</li>
+<li><strong>Jako nástroj na konkrétního člověka je to k ničemu.</strong> Zrádci jsou v pořadí svých řad na
+místech 4, 5, 8, 17, 21 / 1, 4, 5, 9, 13, 15 / 1, 5, 14 z 23.</li>
+<li><strong>Rozpoznávání jmen je ověřené jen vzorkem.</strong> České pády se generují podle pravidla, ne ze
+slovníku; přezdívky jsme doplnili ručně podle výpisu nejčastějších nezařazených slov.
+Ruční kontrola 90 náhodných zachycených zmínek (30 na řadu) našla 90 správných,
+takže falešných je s 95% jistotou pod 3,3 %. Chybějící zmínky tím ověřené nejsou.</li>
+<li><strong>Rekapitulace na začátku dílu se počítá dvakrát.</strong> Tatáž scéna je v dílu, kde se stala,
+i v rekapitulaci dalšího dílu. Týká se to všech hráčů; měření to nemění, je to šum.</li>
+<li><strong>Ve 2. řadě hrají muž a žena se jmény, která se liší jen koncovkou -a.</strong> Ženské jméno má
+tedy stejný tvar jako 2. pád mužského, takže se tento tvar zahazuje oběma (56 výskytů).
+Oba jsou Věrní, takže to výsledek nenaklání, ale obě čísla jsou podstřelená.</li>
+<li><strong>Měření „poslední čtvrtina&quot; jsme vybrali až po tom, co jsme viděli výsledky 3. řady.</strong>
+Proto se jako hlavní uvádí „celá epizoda&quot;. Rozdíl mezi nimi je malý, ale je to výběr po
+faktu a patří to přiznat.</li>
+<li><strong>Slepý test na 3. řadě je slepý pro váhy, ne pro návrh měření</strong> (upozornila na to
+oponentura). Model se učil jen na 1. a 2. řadě. Seznam přezdívek, opravy chyb a výběr
+„poslední čtvrtiny&quot; ale vznikaly při pohledu i na 3. řadu. Skutečně slepé budou až díly
+8 až 12. Kód a data, ze kterých se model učí, jsme pro ně 2. 11. zmrazili; jedinou opravu
+chyby (okno kulatého stolu, oddíl 8) jsme udělali 3. 11., ještě než vyšel 8. díl. Odhady
+k dílům 8 až 12 během vysílání nezveřejňujeme.</li>
+<li><strong>Zkoušeli jsme hodně věcí</strong> (upozornila na to oponentura). Studie prošla zhruba 40 variant:
+definice plané volby, Fryiny signály ve třech skupinách, dav, dvojice, poslední hlas, fáze
+hry, varianty zmínek, oslovení, části dílu. Bez opravy na mnohonásobné testování. Při
+přísné Bonferroniho opravě (0,05 / 40 ≈ 0,0013) by z „tří věcí o hře&quot; obstálo jen „Věrní
+nehádají naslepo&quot; (p = 0,0001). „Zrádci jdou s davem&quot; (p = 0,013) a poslední hlas Zrádce
+(p = 0,004) ne. Nemusí to znamenat, že neplatí, ale jsou méně jisté, než by se zdálo, a
+patří ověřit na nových datech. Video je proto podává jako „dobré tipy, ne jistotu&quot;.</li>
+<li><strong>Tohle není předpověď.</strong> Všechny role jsou známé z vysílání. Ověřuje se metoda, nic se
+nehádá dopředu.</li>
+<li><strong>Fryiny váhy (+0,47, −1,28, −1,73)</strong> jsou ze zpravodajství o jejím videu (The Tab,
+20. a 22. 10. 2026), ne z videa samotného, a ona svou přesnou metodu nezveřejnila. Do
+výpočtu nevstupují. Že jsou v přirozeném logaritmu, je rekonstrukce Eda Jeffersona, ne
+její údaj — sedí ale na jejích vlastních procentech. Co znamená znaménko u konkrétního
+bodu, žádný zdroj výslovně neříká (zdroje v oddílu 10).</li>
+<li><strong>Naše replikace její definice je naše čtení jejího popisu.</strong> „První tři kulaté stoly&quot;
+a 23,5 % / 14,6 % jsou z Jeffersonova rozboru, „jen kola, kde odešel Věrný&quot; jen z jednoho
+článku The Tab. Kdyby to myslela jinak, čísla v oddílu 3b se posunou. Obsah obou videí
+známe jen z rozborů a zpravodajství; ověřené jsou jejich adresy a popisy.</li>
+<li><strong>Zdrojem hlasovací části je Wikipedie, ne vysílání.</strong> Nikdo ji neověřoval proti epizodám.</li>
+</ul>
+<hr />
+<h2 id="9-zaver">9. Závěr</h2>
+<p><strong>Fryin postup postavený na Turingově myšlence se na hlasovacích datech v našem provedení nepotvrdil.</strong> Signál tam je a je statisticky prokazatelný, ale mimo trénink padá pod náhodu. Na sérii, ve které hrála sama Fry, vychází
+0,40, tedy hůř než mince. Není to tím, že by Fry měřila špatně: její planou volbu jsme
+v našem čtení její definice replikovali blízko (24,3 % proti jejím 23,5 %). Je to tím, že
+ten rozdíl stojí na 208 hlasech, neudrží se mimo britské řady a na českých jde na opačnou
+stranu. Na rozhodnutí o konkrétním člověku to nestačí ani omylem.</p>
+<p><strong>To, co funguje, je mnohem hloupější signál: kolik se o kom mluví.</strong> Mimo trénink drží
+AUC kolem 0,85 a obstálo to ve všech třech českých řadách. Je to skoro pětkrát silnější než
+nejsilnější váha našeho hlasovacího modelu a zhruba o třetinu silnější než planá volba
+v našem čtení Fryiny definice.</p>
+<p><strong>Ale Fryina hlavní myšlenka — vesmíry — se nepotvrdila.</strong> Jednou dala dokonalý výsledek,
+jednou výsledek horší než náhoda. Sčítání mnoha slabých signálů nevyrobí silný signál,
+vyrobí nestabilní.</p>
+<p><strong>A i to, co funguje, nejspíš neměří hru.</strong> Dvě vysvětlení vyloučit neumíme: že pořad
+dává Zrádcům víc prostoru, protože tvůrci vědí, kdo to je, a že se Zrádci jmenují mezi
+sebou na konkláve a v noci. Signál je nejsilnější po kulatém stole, kde je i noční scéna
+Zrádců, a u samotného stolu je slabý a neprůkazný. Divák role zná z vysílání, takže jemu to
+nic nového neprozradí; ukazuje to hlavně, komu pořad dává prostor. Hráči u kulatého stolu
+je to k ničemu — ten konkláve Zrádců nevidí a slyší jen to, co se řekne nahlas. A právě
+v tom, co se řekne nahlas, je signál slabý: u stolu malý a neprůkazný, v přímém oslovení
+jsme žádný <strong>nezměřili</strong> (ten test je ale slabý, oddíl 4).</p>
+<p>Nejhezčí číslo celé studie je nakonec to nejnudnější: <strong>−0,50 banu za to, že se o někom
+skoro nemluví.</strong> Nejsilnější věc, kterou se o Zrádcích dá zjistit, je spíš to, kdo jimi
+<em>není</em> (většinou: tak to vyšlo v 78 % bootstrapových běhů, oddíl 5).</p>
+<hr />
+<h2 id="10-jak-si-to-overit">10. Jak si to ověřit</h2>
+<p><strong>Skripty a zpracovaná data zatím zveřejněné nejsou.</strong> Nenajdete tu proto návod ke
+spuštění, jen popis postupu a zdroje, ze kterých vychází. Zdrojová data jsou veřejná:
+tabulky hlasování na Wikipedii a díly českých řad zveřejněné na iprima.cz.</p>
+<h3 id="postup">Postup</h3>
+<ol>
+<li><strong>Hlasování.</strong> Tabulky hlasování 20 sérií z anglické a české Wikipedie (export přes
+<code>Special:Export</code>), převedené na hráče, role, kola a hlasy. Parser zvládá obě rozložení
+tabulek (cs i en); naverbované Zrádce počítá do naverbování jako Věrné (oddíl 1).</li>
+<li><strong>Titulky.</strong> Skryté titulky pro neslyšící k 31 dílům českých řad 1–3: zmínky jmen hráčů
+(české pády podle pravidla, přezdívky doplněné ručně), oslovení v 5. pádě a okno
+kulatého stolu v každém dílu (oddíl 8).</li>
+<li><strong>Výpočty.</strong> Turingovy váhy z hlasování, křížové ověření a permutace (oddíl 3), Fryiny
+signály (3b), zmínkový signál s permutací na úrovni hráčů a síla testu u oslovení (4),
+hlavní test s učením na 1. a 2. české řadě, slepým testem na 3. a bootstrapem vah (5),
+vesmíry (6), poslední hlas Zrádce (7b), zmínky před stolem, u stolu a po stole a ruční
+kontrola vzorku 90 zmínek (8).</li>
+</ol>
+<p>Všechny výpisy přepočítá naráz jeden skript. Každý výpis přepíše celý a do hlavičky zapíše
+datum, otisk skriptu a otisk vstupních dat.</p>
+<p>Čistý Python 3.10, žádné instalované knihovny. Všechna náhodná čísla mají pevné semínko
+a od 2. 11. 2026 i pevné pořadí hráčů, takže běh je opakovatelný: dva běhy hlavního testu
+za sebou dávají shodný výpis (ověřeno 2. 11.). Do té doby to neplatilo (oddíl 7, chyba 11).</p>
+<h3 id="zdroje">Zdroje</h3>
+<p><strong>K metodě Hannah Fry.</strong> Obsah obou videí známe jen z rozborů a zpravodajství (oddíl 8).</p>
+<ul>
+<li>Hannah Fry: „How would Alan Turing have played the Traitors?&quot;, YouTube:
+<a href="https://www.youtube.com/watch?v=twDvxNooI_4">https://www.youtube.com/watch?v=twDvxNooI_4</a></li>
+<li>Matt Parker (Stand-up Maths): „Did Hannah Fry crack The Traitors?&quot;, YouTube, 22. 10. 2026:
+<a href="https://www.youtube.com/watch?v=KxHKrbfnmTU">https://www.youtube.com/watch?v=KxHKrbfnmTU</a></li>
+<li>Ed Jefferson: „Could Hannah Fry have predicted what would happen in The Traitors using
+data?&quot;, 19. 10. 2026 (přirozený logaritmus, první tři kulaté stoly, 23,5 % / 14,6 %):
+<a href="https://edjefferson.com/blog/could-hannah-fry-have-predicted-what-would-happen-in-the-traitors-using-data/">https://edjefferson.com/blog/could-hannah-fry-have-predicted-what-would-happen-in-the-traitors-using-data/</a></li>
+<li>The Tab, 20. 10. 2026 (body se znaménkem):
+<a href="https://thetab.com/2026/10/20/if-you-apply-hannah-frys-celebrity-traitors-formula-to-the-show-its-so-clear-she-wouldve-won">https://thetab.com/2026/10/20/if-you-apply-hannah-frys-celebrity-traitors-formula-to-the-show-its-so-clear-she-wouldve-won</a></li>
+<li>The Tab, 22. 10. 2026 (šest bodů, „jen kola, kde odešel Věrný&quot;):
+<a href="https://thetab.com/2026/10/22/hannah-frys-celebrity-traitors-spreadsheet-updated-to-reveal-who-looks-most-suspicious">https://thetab.com/2026/10/22/hannah-frys-celebrity-traitors-spreadsheet-updated-to-reveal-who-looks-most-suspicious</a></li>
+<li>PinkNews, 16. 10. 2026 („první tři epizody&quot;):
+<a href="https://www.thepinknews.com/2026/10/16/hannah-fry-celebrity-traitors-theory/">https://www.thepinknews.com/2026/10/16/hannah-fry-celebrity-traitors-theory/</a></li>
+</ul>
+<p><strong>K Majdě.</strong> Označení „vědkyně“: Kinotip2.cz, 17. 9. 2026: <a href="https://www.kinotip2.cz/clanky/zradci-3-pritvrzuji-vedkyne-si-vede-tabulku-novinarka-je-zvykla-na-manipulaci-kdo-ma-nejlepsi-taktiku-20260917-18010.html">https://www.kinotip2.cz/clanky/zradci-3-pritvrzuji-vedkyne-si-vede-tabulku-novinarka-je-zvykla-na-manipulaci-kdo-ma-nejlepsi-taktiku-20260917-18010.html</a>. Své ukazatele zveřejňuje na Instagramu (<a href="https://www.instagram.com/majdabohutinska/">https://www.instagram.com/majdabohutinska/</a>); její definici jsme převzali z přepisu, který udělal autor, profil jsme sami neotevřeli.</p>
+<p><strong>Data.</strong></p>
+<ul>
+<li>Wikipedie (anglická a česká): stránky jednotlivých sérií pořadu <em>The Traitors</em> a <em>Zrádci</em>
+s tabulkami hlasování.</li>
+<li>iprima.cz: zveřejněné díly českých řad 1–3 pořadu <em>Zrádci</em> a jejich skryté titulky pro
+neslyšící.</li>
+</ul>
+
+</main>
+<footer class="paticka">
+<p>Autor na Instagramu: <a href="https://www.instagram.com/johny_plesh/">@johny_plesh</a></p>
+</footer>
+</body>
+</html>
